@@ -10,6 +10,7 @@ import invariant from 'invariant'
 // performant.
 export const MASS_UPDATE_UI_STATE = '@@redux-ui/MASS_UPDATE_UI_STATE';
 export const UPDATE_UI_STATE = '@@redux-ui/UPDATE_UI_STATE';
+export const DEEP_UPDATE_UI_STATE = '@@redux-ui/DEEP_UPDATE_UI_STATE';
 export const SET_DEFAULT_UI_STATE = '@@redux-ui/SET_DEFAULT_UI_STATE';
 
 // These are private consts used in actions only given to the UI decorator.
@@ -38,6 +39,11 @@ export default function reducer(state = defaultState, action) {
     case UPDATE_UI_STATE:
       const { name, value } = action.payload;
       state = state.setIn(key.concat(name), value);
+      break;
+
+    case DEEP_UPDATE_UI_STATE:
+      const {keyPath, value} = action.payload;
+      state = state.setIn([key, ...keyPath], value);
       break;
 
     case MASS_UPDATE_UI_STATE:
@@ -146,6 +152,17 @@ export function updateUI(key, name, value) {
     }
   };
 };
+
+export function deepUpdateUI(key, keyPath, value) {
+  return {
+    type: DEEP_UPDATE_UI_STATE,
+    payload: {
+      key,
+      keyPath,
+      value
+    }
+  };
+}
 
 export function massUpdateUI(uiVars, transforms) {
   return {
