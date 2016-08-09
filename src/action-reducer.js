@@ -43,7 +43,7 @@ export default function reducer(state = defaultState, action) {
 
     case DEEP_UPDATE_UI_STATE:
       const {keyPath, val} = action.payload;
-      state = state.setIn([key, ...keyPath], v);
+      state = state.setIn([key, ...keyPath], val);
       break;
 
     case MASS_UPDATE_UI_STATE:

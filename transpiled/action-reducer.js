@@ -72,7 +72,7 @@ function reducer() {
         var keyPath = _action$payload2.keyPath;
         var val = _action$payload2.val;
 
-        state = state.setIn([key].concat(_toConsumableArray(keyPath)), v);
+        state = state.setIn([key].concat(_toConsumableArray(keyPath)), val);
         break;
 
       case MASS_UPDATE_UI_STATE:
