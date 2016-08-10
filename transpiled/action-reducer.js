@@ -20,8 +20,6 @@ var _invariant2 = _interopRequireDefault(_invariant);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 // For updating multiple UI variables at once.  Each variable might be part of
 // a different context; this means that we need to either call updateUI on each
 // key of the object to update or do transformations within one action in the
@@ -69,10 +67,10 @@ function reducer() {
 
       case DEEP_UPDATE_UI_STATE:
         var _action$payload2 = action.payload;
-        var keyPath = _action$payload2.keyPath;
-        var val = _action$payload2.val;
+        var stateName = _action$payload2.stateName;
+        var updater = _action$payload2.updater;
 
-        state = state.setIn([key].concat(_toConsumableArray(keyPath)), val);
+        state = state.updateIn(key.concat(stateName), updater);
         break;
 
       case MASS_UPDATE_UI_STATE:
@@ -189,13 +187,13 @@ function updateUI(key, name, value) {
   };
 };
 
-function deepUpdateUI(key, keyPath, val) {
+function deepUpdateUI(key, stateName, updater) {
   return {
     type: DEEP_UPDATE_UI_STATE,
     payload: {
       key: key,
-      keyPath: keyPath,
-      val: val
+      stateName: stateName,
+      updater: updater
     }
   };
 }

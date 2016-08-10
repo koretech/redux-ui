@@ -42,8 +42,8 @@ export default function reducer(state = defaultState, action) {
       break;
 
     case DEEP_UPDATE_UI_STATE:
-      const {keyPath, val} = action.payload;
-      state = state.setIn([key, ...keyPath], val);
+      const {stateName, updater} = action.payload;
+      state = state.updateIn(key.concat(stateName), updater);
       break;
 
     case MASS_UPDATE_UI_STATE:
@@ -153,13 +153,13 @@ export function updateUI(key, name, value) {
   };
 };
 
-export function deepUpdateUI(key, keyPath, val) {
+export function deepUpdateUI(key, stateName, updater) {
   return {
     type: DEEP_UPDATE_UI_STATE,
     payload: {
       key,
-      keyPath,
-      val
+      stateName,
+      updater
     }
   };
 }
